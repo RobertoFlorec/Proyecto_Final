@@ -7,7 +7,6 @@
 
 
 #include "ADC.h"
-#include "ACELEROMETRO.h"
 
 
 uint32 ADC0_inputChannel = 0;

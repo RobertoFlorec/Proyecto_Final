@@ -1,0 +1,22 @@
+/*
+ * ACELEROMETRO.h
+ *
+ *  Created on: 27/11/2017
+ *      Author: Roberto
+ */
+
+#ifndef ACELEROMETRO_H_
+#define ACELEROMETRO_H_
+
+const ADC_ConfigType ADC_Config = {
+		ADC_0,
+		BITMODE_8_9,
+		DADP1,
+		SAMPLES_32,
+		AVERAGE_ENABLE,
+		INTERRUPT_ENABLE
+};
+
+
+
+#endif /* ACELEROMETRO_H_ */

@@ -34,7 +34,7 @@
  */
 #include <stdio.h>
 #include "MK64F12.h"
-#include "ACELEROMETRO.h"
+
 /* TODO: insert other include files here. */
 
 /* TODO: insert other definitions and declarations here. */
@@ -44,11 +44,9 @@
  */
 int main(void) {
 
-	uint8 Y;
-	acelerometroInit();
     while(1) {
-    	Y = getValue_Y();
-    	printf("\n%d", Y);
+
+
 
     }
     return 0 ;

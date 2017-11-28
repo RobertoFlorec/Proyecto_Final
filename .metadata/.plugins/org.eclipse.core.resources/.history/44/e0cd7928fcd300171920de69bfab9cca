@@ -1,0 +1,20 @@
+/*
+ * ACELEROMETRO.c
+ *
+ *  Created on: 27/11/2017
+ *      Author: Roberto
+ */
+#include "ADC.h"
+#include "ACELEROMETRO.h"
+
+
+
+void acelerometroInit(void){
+ADC_init(&ADC_Config);
+}
+
+uint8 getVlaue_Y(void){
+	uint8 value_Y;
+	return value_Y;
+}
+
