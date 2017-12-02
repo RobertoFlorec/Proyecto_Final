@@ -11,7 +11,7 @@ const ADC_ConfigType ADC_Config = {
 		ADC_0,
 		BITMODE_8_9,
 		DADP1,
-		SAMPLES_32,
+		SAMPLES_4,
 		AVERAGE_ENABLE,
 		INTERRUPT_ENABLE
 };

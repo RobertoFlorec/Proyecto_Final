@@ -1,0 +1,28 @@
+/*
+ * ACELEROMETRO.c
+ *
+ *  Created on: 27/11/2017
+ *      Author: Roberto
+ */
+#include "ADC.h"
+#include "ACELEROMETRO.h"
+
+const ADC_ConfigType ADC_Config = {
+		ADC_0,
+		BITMODE_8_9,
+		DADP1,
+		SAMPLES_16,
+		AVERAGE_ENABLE,
+		INTERRUPT_ENABLE
+};
+
+void acelerometroInit(void){
+ADC_init(&ADC_Config);
+}
+
+uint8 getValue_Y(void){
+	uint8 getValue_Y;
+	getValue_Y = ADC_read(ADC_Config.ADC_Channel);
+	return getValue_Y;
+}
+

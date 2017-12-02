@@ -36,21 +36,84 @@
 #include "MK64F12.h"
 #include "ACELEROMETRO.h"
 #include "GlobalFunctions.h"
-/* TODO: insert other include files here. */
+#include "FlexTimer.h"
+#include "PWM.h"
 
-/* TODO: insert other definitions and declarations here. */
-
-/*
- * @brief   Application entry point.
- */
 int main(void) {
 
 	uint8 Y;
+	uint8 counter = 0;
+	uint8 value = 0;
+	uint8 arreglo[20];
 	acelerometroInit();
+
+	sint16 dutyCycle = 219;
+	uint8 inputValueA = 0,inputPortC = 0;
+	GPIO_pinControlRegisterType	pinControlRegisterPORTA = GPIO_MUX1|GPIO_PE|GPIO_PS;
+	GPIO_pinControlRegisterType	pinControlRegisterPORTC6 = GPIO_MUX1|GPIO_PE|GPIO_PS;
+	/**Clock gating for port A and C*/
+	SIM->SCGC5 |= GPIO_CLOCK_GATING_PORTA|GPIO_CLOCK_GATING_PORTC;
+	PORTA->PCR[1]   = PORT_PCR_MUX(0x3);
+	/**Pin control register configuration for GPIO*/
+	PORTA->PCR[BIT4] = pinControlRegisterPORTA;
+	PORTC->PCR[BIT6] = pinControlRegisterPORTC6;
+	/**Pin 4 and pin 6 of port A and C, respectively as inputs*/
+	GPIOA->PDDR &= ~(BIT4);
+	GPIOC->PDDR &= ~(BIT6);
+	/**Configuration function for FlexTimer*/
+	PWM_init();
+
     while(1) {
+    	if(getValue_Y()){
     	Y = getValue_Y();
-    	printf("\n%d", Y);
-    	delay(65000);
+    	arreglo[counter] = Y;
+    	counter++;
+    	if(counter >= 20){
+    		while(counter > 0){
+    			value += arreglo[counter];
+    			counter--;
+    		}
+    		value /= 20;
+    	printf("\nAcelerometro: %d", value);
+    	}
+    	}
+
+    	/*********************************************************************************/
+
+    	/**Reading the input values for port A and C*/
+    			inputPortC = GPIOC->PDIR;
+    			inputPortC &=(0x40);
+    			inputPortC = inputPortC >> 6;
+    			inputValueA = GPIOA->PDIR;
+    			inputValueA &=(0x10);
+    			inputValueA = inputValueA >> 4;
+
+
+    			if(inputValueA ==0)
+    			{
+    				dutyCycle=dutyCycle+9;
+    				if(dutyCycle > 255){
+    					dutyCycle = 255;
+    				}
+    				printf("\ndutyCycle: %d", dutyCycle);
+    				FlexTimer_updateCHValue(dutyCycle, FTM_0, CHANNEL_6);
+    				delay(20000);
+    			}
+    			if(inputPortC==0)
+    			{
+    				dutyCycle = dutyCycle-9;
+    				if(dutyCycle < 66){
+    					dutyCycle = 66;
+    				}
+    				printf("\ndutyCycle: %d", dutyCycle);
+    				FlexTimer_updateCHValue(dutyCycle, FTM_0, CHANNEL_6);
+    				delay(20000);
+    			}
+
+
+
+    	/*********************************************************************************/
+				delay(5000);
 
     }
     return 0 ;

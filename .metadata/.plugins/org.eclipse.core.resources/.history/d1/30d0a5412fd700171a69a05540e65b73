@@ -1,0 +1,110 @@
+/**
+	\file
+	\brief
+		This is the starter file of FlexTimer.
+		In this file the FlexTimer is configured in overflow mode.
+	\author J. Luis Pizano Escalante, luispizano@iteso.mx
+	\date	7/09/2014
+	\todo
+	    Add configuration structures.
+ */
+
+#include "FlexTimer.h"
+#include "MK64F12.h"
+#include <stdio.h>
+
+
+void FTM0_ISR()
+{
+	printf("\nFTM0_ISR");
+	FTM0->SC &= ~FLEX_TIMER_TOF;
+	GPIOD->PDOR ^= 0xFF;
+}
+
+void FlexTimer_updateCHValue(sint16 channelValue)
+{
+	/**Assigns a new value for the duty cycle*/
+	FTM0->CONTROLS[6].CnV = channelValue;
+	printf("\nFlexTimer_updateCHValue");
+}
+
+void FlexTimer_Init(void){
+
+		FlexTimer_clockGating(FTM_ConfigType->FTM_0);/*! Clock gating for the FlexTimer 0*/
+		FlexTimerWPDIS(FTM_ConfigType->WPDIS_DISABLE);/*! When write protection is enabled (WPDIS = 0), write protected bits cannot be written. When write protection is disabled (WPDIS = 1), write protected bits can be written.*/
+		FTM_enable(FTM_ConfugType->FTM_DISABLE);/*! Enables the writing over all registers*/
+		FlexTimer_MODSelect(FTM_ConfigType->FTM_0);/*! Assigning a default value for modulo register*/
+
+		/**Selects the Edge-Aligned PWM mode mode*/
+		FTM0->CONTROLS[6].CnSC = FLEX_TIMER_MSB | FLEX_TIMER_ELSB;
+		/**Assign a duty cycle of 40%*/
+		FTM0->CONTROLS[6].CnV = FTM0->MOD * 0.53;
+		/**Configure the times*/
+		FTM0->SC = FLEX_TIMER_CLKS_1|FLEX_TIMER_PS_128;
+}
+
+void FlexTimer_clockGating(FTM_ChannelType Channel){
+	switch(Channel){
+	case FTM_0:
+		SIM->SCGC6 |= FLEX_TIMER_0_CLOCK_GATING;
+		break;
+	case FTM_1:
+		SIM->SCGC6 |= FLEX_TIMER_1_CLOCK_GATING;
+		break;
+	case FTM_2:
+		SIM->SCGC6 |= FLEX_TIMER_2_CLOCK_GATING;
+		break;
+	case FTM_3:
+		SIM->SCGC3 |= FLEX_TIMER_3_CLOCK_GATING;
+		break;
+	default:
+		break;
+	}
+}
+
+void FlexTimerWPDIS(WPDIS_selectStateType select){
+	switch(select){
+	case WPDIS_ENABLE:
+		FTM0->MODE &= FLEX_TIMER_WPDIS;
+		break;
+	case WPDIS_DISABLE:
+		FTM0->MODE |= FLEX_TIMER_WPDIS;
+		break;
+	default:
+		break;
+	}
+}
+
+void FTM_enable(FTM_selectStateType select){
+	switch(select){
+	case FTM_ENABLE:
+		FTM0->MODE |= FLEX_TIMER_FTMEN;
+		break;
+	case FTM_DISABLE:
+		FTM0->MODE &= ~FLEX_TIMER_FTMEN;
+		break;
+	default:
+		break;
+	}
+
+}
+
+void FlexTimer_MODSelect(FTM_ChannelType Channel){
+	switch(Channel){
+	case FTM_0:
+		FTM0->MOD = 0x00FF;
+		break;
+	case FTM_1:
+		FTM1->MOD = 0x00FF;
+		break;
+	case FTM_2:
+		FTM2->MOD = 0x00FF;
+		break;
+	case FTM_3:
+		FTM3->MOD = 0x00FF;
+		break;
+	default:
+		break;
+	}
+
+}

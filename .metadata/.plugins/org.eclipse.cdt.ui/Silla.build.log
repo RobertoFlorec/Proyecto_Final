@@ -1,6 +1,26 @@
-20:06:17 **** Incremental Build of configuration Debug for project Silla ****
+04:21:43 **** Incremental Build of configuration Debug for project Silla ****
 make -r -j3 all 
-make: Nothing to be done for `all'.
+Building file: ../source/main.c
+Invoking: MCU C Compiler
+arm-none-eabi-gcc -DCR_INTEGER_PRINTF -DSDK_DEBUGCONSOLE=0 -D__MCUXPRESSO -D__USE_CMSIS -DDEBUG -DSDK_OS_BAREMETAL -DFSL_RTOS_BM -DCPU_MK64FN1M0VLL12 -DCPU_MK64FN1M0VLL12_cm4 -D__REDLIB__ -I"/Sistemas_Embebidos/Proyecto_Final/Silla/source" -I"/Sistemas_Embebidos/Proyecto_Final/Silla" -I"/Sistemas_Embebidos/Proyecto_Final/Silla/CMSIS" -I/Users/Roberto/mcuxpresso/SDKPackages/SDK_2/CMSIS/Include -I/Users/Roberto/mcuxpresso/SDKPackages/SDK_2/CMSIS -I/Users/Roberto/mcuxpresso/SDKPackages/SDK_2/devices/MK64F12 -I/Users/Roberto/mcuxpresso/SDKPackages/SDK_2/devices -I"/Sistemas_Embebidos/Proyecto_Final/Silla/startup" -O0 -fno-common -g3 -Wall -c -fmessage-length=0 -fno-builtin -ffunction-sections -fdata-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -D__REDLIB__ -specs=redlib.specs -MMD -MP -MF"source/main.d" -MT"source/main.o" -MT"source/main.d" -o "source/main.o" "../source/main.c"
+Finished building: ../source/main.c
+ 
+Building target: Silla.axf
+Invoking: MCU Linker
+arm-none-eabi-gcc -nostdlib -Xlinker -Map="Silla.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -T Silla_Debug.ld -o "Silla.axf"  ./startup/startup_mk64f12.o  ./source/ACELEROMETRO.o ./source/ADC.o ./source/FlexTimer.o ./source/GPIO.o ./source/GlobalFunctions.o ./source/PWM.o ./source/main.o  ./CMSIS/system_MK64F12.o   
+Memory region         Used Size  Region Size  %age Used
+   PROGRAM_FLASH:       10580 B         1 MB      1.01%
+      SRAM_UPPER:        8392 B       192 KB      4.27%
+      SRAM_LOWER:          0 GB        64 KB      0.00%
+        FLEX_RAM:          0 GB         4 KB      0.00%
+Finished building target: Silla.axf
+ 
+make --no-print-directory post-build
+Performing post-build steps
+arm-none-eabi-size "Silla.axf"; # arm-none-eabi-objcopy -v -O binary "Silla.axf" "Silla.bin" ; # checksum -p MK64FN1M0xxx12 -d "Silla.bin";
+   text	   data	    bss	    dec	    hex	filename
+  10580	      0	   8392	  18972	   4a1c	Silla.axf
+ 
 
-20:06:17 Build Finished (took 78ms)
+04:21:43 Build Finished (took 342ms)
 
