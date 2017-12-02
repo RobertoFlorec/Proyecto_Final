@@ -35,6 +35,7 @@
 #include <stdio.h>
 #include "MK64F12.h"
 #include "ACELEROMETRO.h"
+#include "GlobalFunctions.h"
 /* TODO: insert other include files here. */
 
 /* TODO: insert other definitions and declarations here. */
@@ -49,6 +50,7 @@ int main(void) {
     while(1) {
     	Y = getValue_Y();
     	printf("\n%d", Y);
+    	delay(65000);
 
     }
     return 0 ;
