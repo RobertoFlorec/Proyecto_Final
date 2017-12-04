@@ -1,0 +1,30 @@
+/*
+ * PID.c
+ *
+ *  Created on: 02/12/2017
+ *      Author: Roberto
+ */
+
+#include "PID.h"
+#include "DataTypeDefinitions.h"
+#include "ACELEROMETRO.h"
+
+uint8 prevError = 0;
+uint8 integral = 0;
+uint8 derivative = 0;
+uint8 error = 0;
+uint8 Kp = 0;
+uint8 Ki = 0;
+uint8 Kd = 0;
+const uint8 inputRef = 125;
+
+void PID(void){
+
+	error = inputRef - getValue_Y();
+	integral = integral + (error * iteration_time);
+	derivative = (error- prevError) / iteration_time;
+	output = Kp * error + Ki * integral + Kd * derivative + bias;
+	prevError = error;
+	delay(iterarion_time);
+
+}

@@ -49,7 +49,7 @@ void FlexTimer_Init(const FTM_ConfigType* FTMconfig){
 		FTM_enable(FTMconfig->FTM_Status);/*! Enables the writing over all registers*/
 		FlexTimer_MODSelect(FTMconfig->FTM_Channel);/*! Assigning a default value for modulo register*/
 		FlexTimer_setChannel(FTMconfig->FTM_Channel, FTMconfig->channel);/*! Selects the Edge-Aligned PWM mode mode*/
-		FlexTimer_CnVset(FTMconfig->FTM_Channel, FTMconfig->channel);/*! Assign a duty cycle of 40%*/
+		FlexTimer_CnVset(FTMconfig->FTM_Channel, FTMconfig->channel);/*! Assign a duty cycle of 25%*/
 		FlexTimer_setClk(FTMconfig->FTM_Channel, FTMconfig->FTM_CLK, FTMconfig->FTM_DIVIDER);/*! Configure the clock*/
 }
 
@@ -142,16 +142,16 @@ void FlexTimer_setChannel(FTM_ChannelType Channel, channelType_FTM chan){
 void FlexTimer_CnVset(FTM_ChannelType Channel, channelType_FTM chan){
 	switch(Channel){
 		case FTM_0:
-			FTM0->CONTROLS[chan].CnV = FTM0->MOD * 0.53;
+			FTM0->CONTROLS[chan].CnV = FTM0->MOD * 0.41;
 			break;
 		case FTM_1:
-			FTM1->CONTROLS[chan].CnV = FTM1->MOD * 0.53;
+			FTM1->CONTROLS[chan].CnV = FTM1->MOD * 0.41;
 			break;
 		case FTM_2:
-			FTM1->CONTROLS[chan].CnV = FTM2->MOD * 0.53;
+			FTM1->CONTROLS[chan].CnV = FTM2->MOD * 0.41;
 			break;
 		case FTM_3:
-			FTM1->CONTROLS[chan].CnV = FTM3->MOD * 0.53;
+			FTM1->CONTROLS[chan].CnV = FTM3->MOD * 0.41;
 			break;
 		default:
 			break;

@@ -1,0 +1,121 @@
+/*
+ * Copyright (c) 2016, NXP Semiconductor, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * o Redistributions of source code must retain the above copyright notice, this list
+ *   of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following disclaimer in the documentation and/or
+ *   other materials provided with the distribution.
+ *
+ * o Neither the name of NXP Semiconductor, Inc. nor the names of its
+ *   contributors may be used to endorse or promote products derived from this
+ *   software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
+/**
+ * @file    Final.c
+ * @brief   Application entry point.
+ */
+#include <stdio.h>
+#include "MK64F12.h"
+#include "ACELEROMETRO.h"
+#include "GlobalFunctions.h"
+#include "FlexTimer.h"
+#include "PWM.h"
+#include "PID.h"
+
+int main(void) {
+
+	uint8 Y;/*! Actual value of accelerometer*/
+	uint8 counter = 0;/*! Increases as the array saves values coming form accelerometer for later average*/
+//	uint16 value = 0; /*! */
+	uint8 arreglo[20]; /*! Array to save 20 values coming from the accelerometer for later average*/
+	acelerometroInit();/*! Initialization on ADC to obtain accelerometer data*/
+	uint32 PID_data;/*! Variable to keep the data coming from the PID*/
+	sint16 dutyCycle = 135;/*! Define dutyCycle to agree with the initial PWM value*/
+	PWM_init();/*! Configuration function for FlexTimer as PWM and respective GPIO setup*/
+
+    while(1) {
+
+
+    	PID_data = PID();
+//
+    	dutyCycle += PID_data * 6;
+    	FlexTimer_updateCHValue(dutyCycle, FTM_0, CHANNEL_6);
+    	delay(100000);
+
+
+
+
+
+//
+//    	    	if(getValue_Y()){
+//    	Y = getValue_Y();
+//    	arreglo[counter] = Y;
+//    	counter++;
+//    	if(counter >= 20){
+//    		while(counter > 0){
+//    			value += arreglo[counter];
+//    			counter--;
+//    		}
+//    		value /= 20;
+//    	printf("\nAcelerometro: %d", value);
+//    	}
+//    	}
+//
+//    	/*********************************************************************************/
+//
+//    	/**Reading the input values for port A and C*/
+//    			inputPortC = GPIOC->PDIR;
+//    			inputPortC &=(0x40);
+//    			inputPortC = inputPortC >> 6;
+//    			inputValueA = GPIOA->PDIR;
+//    			inputValueA &=(0x10);
+//    			inputValueA = inputValueA >> 4;
+//
+//
+//    			if(inputValueA ==0)
+//    			{
+//    				dutyCycle=dutyCycle+9;
+//    				if(dutyCycle > 255){
+//    					dutyCycle = 255;
+//    				}
+//    				printf("\ndutyCycle: %d", dutyCycle);
+//    				FlexTimer_updateCHValue(dutyCycle, FTM_0, CHANNEL_6);
+//    				delay(20000);
+//    			}
+//    			if(inputPortC==0)
+//    			{
+//    				dutyCycle = dutyCycle-9;
+//    				if(dutyCycle < 66){
+//    					dutyCycle = 66;
+//    				}
+//    				printf("\ndutyCycle: %d", dutyCycle);
+//    				FlexTimer_updateCHValue(dutyCycle, FTM_0, CHANNEL_6);
+//    				delay(20000);
+//    			}
+//
+//
+//
+//    	/*********************************************************************************/
+//				delay(5000);
+
+    }
+    return 0 ;
+}

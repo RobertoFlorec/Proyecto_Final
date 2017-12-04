@@ -1,0 +1,22 @@
+/*
+ * PID.c
+ *
+ *  Created on: 02/12/2017
+ *      Author: Roberto
+ */
+
+#include "PID.h"
+
+void PID(void){
+	uint16 valor, control;
+	float a,b,c;
+	float limite;
+	float rt, eT, iT, dT, yT, uT,iT0,eT0;
+	float max, min;
+
+	min = 0.0;
+	max = 1000.0;
+	iT0 = 0.0;
+	eT0 = 0.0;
+	a = 0.1243;
+}
